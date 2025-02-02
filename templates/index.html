@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dream Decoder AI 🌙</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; background: #f4f4f4; }
+        h2 { color: #333; }
+        textarea { width: 80%; height: 100px; }
+        button { padding: 10px 20px; font-size: 16px; margin-top: 10px; }
+        .result { background: white; padding: 10px; margin-top: 20px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <h2>🌙 AI Dream Decoder 🌙</h2>
+    <form method="post">
+        <textarea name="dream" placeholder="Describe your dream here..."></textarea><br>
+        <button type="submit">Decode My Dream</button>
+    </form>
+
+    {% if meaning %}
+        <div class="result">
+            <h3>🧠 Interpretation:</h3>
+            <p>{{ meaning }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
