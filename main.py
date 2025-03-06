@@ -13,9 +13,9 @@ def interpret_dream(dream_text):
         "Content-Type": "application/json"
     }
     data = {
-        "model": "mistral-tiny",  # Switched to faster model
+        "model": "mistral-tiny",  # Still fast
         "messages": [
-            {"role": "system", "content": "You are a dream interpretation expert. Analyze dreams by identifying key symbols, emotions, and providing a concise conclusion. Respond in clear, structured text with sections: 'Symbols', 'Emotions', 'Conclusion'."},
+            {"role": "system", "content": "You are a dream interpretation expert. Provide a concise interpretation in 3-4 lines, focusing on the core meaning without extra sections or formatting. Keep it simple and direct."},
             {"role": "user", "content": f"Interpret this dream: {dream_text}"}
         ]
     }
