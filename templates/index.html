@@ -14,19 +14,35 @@
         body {
             background: linear-gradient(135deg, #1a0b2e, #2e1b47);
             height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow-x: hidden;
             color: #fff;
+            position: relative;
+        }
+        /* Enhanced background with nebula effect */
+        .nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(26, 11, 46, 0.8) 100%);
+            opacity: 0.4;
+            z-index: 0;
+            animation: pulse 15s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 0.3; }
         }
         .stars {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 1;
         }
         .star {
             position: absolute;
@@ -35,122 +51,475 @@
             animation: twinkle 3s infinite ease-in-out;
         }
         @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+            transform: rotate(-45deg);
+            animation: shoot 8s linear infinite;
+            opacity: 0;
+        }
+        @keyframes shoot {
+            0% { transform: translateX(-100px) translateY(-100px) rotate(-45deg); opacity: 1; }
+            20% { opacity: 0; }
+            100% { transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
         }
         .container {
             position: relative;
-            z-index: 1;
+            z-index: 10;
             text-align: center;
             padding: 40px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             box-shadow: 0 0 40px rgba(138, 43, 226, 0.3);
-            backdrop-filter: blur(5px);
-            max-width: 600px;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
             width: 90%;
+            margin: 40px auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1), transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            font-size: 2.8em;
+            margin-bottom: 30px;
             color: #d8b4fe;
-            text-shadow: 0 0 10px rgba(216, 180, 254, 0.7);
+            text-shadow: 0 0 15px rgba(216, 180, 254, 0.7);
+            position: relative;
+            display: inline-block;
+        }
+        h1::after {
+            content: '✨';
+            position: absolute;
+            top: -15px;
+            right: -30px;
+            font-size: 0.6em;
+            animation: float 3s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+        .dream-cloud {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.07);
+            animation: pulsate 5s infinite alternate;
+        }
+        @keyframes pulsate {
+            0% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.3); }
+            100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.7); }
+        }
+        .cloud-icon {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 2em;
+            color: rgba(255, 255, 255, 0.3);
+            transform: rotate(-10deg);
         }
         .input-box {
             width: 100%;
-            padding: 15px;
-            font-size: 1.1em;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            outline: none;
-            box-shadow: inset 0 0 5px rgba(138, 43, 226, 0.5);
-            margin-bottom: 20px;
-            resize: none;
-        }
-        .input-box::placeholder {
-            color: #b19cd9;
-        }
-        .decode-btn {
-            padding: 12px 30px;
+            padding: 20px;
             font-size: 1.2em;
             border: none;
-            border-radius: 25px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            outline: none;
+            box-shadow: inset 0 0 10px rgba(138, 43, 226, 0.3);
+            resize: none;
+            transition: all 0.3s ease;
+        }
+        .input-box:focus {
+            box-shadow: inset 0 0 15px rgba(138, 43, 226, 0.7);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .input-box::placeholder {
+            color: rgba(177, 156, 217, 0.7);
+        }
+        .decode-btn-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 10px;
+            z-index: 2;
+        }
+        .decode-btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 30px;
             background: linear-gradient(45deg, #8a2be2, #ff69b4);
             color: #fff;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        .decode-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff69b4, #8a2be2);
+            transition: all 0.4s ease;
+            z-index: -1;
         }
         .decode-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.7);
+            box-shadow: 0 0 25px rgba(138, 43, 226, 0.8);
         }
-        .output {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            font-size: 1.1em;
-            color: #e6e6fa;
-            text-align: left;
+        .decode-btn:hover::before {
+            left: 0;
         }
-        .output h3 {
-            color: #d8b4fe;
-            margin-bottom: 10px;
-            text-shadow: 0 0 5px rgba(216, 180, 254, 0.5);
+        .btn-particles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
         }
-        .output p {
-            margin: 5px 0;
+        .btn-particle {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
         }
-        .output ul {
-            list-style-type: none;
-            padding-left: 20px;
-        }
-        .output li {
+        .loader {
+            display: none;
+            margin: 20px auto;
+            width: 60px;
+            height: 60px;
             position: relative;
-            margin: 5px 0;
         }
-        .output li:before {
+        .loader-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #d8b4fe;
+            animation: spin 1.5s linear infinite;
+        }
+        .loader-inner:nth-child(2) {
+            border-top-color: transparent;
+            border-right-color: #ff69b4;
+            animation-duration: 2s;
+        }
+        .loader-inner:nth-child(3) {
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: #8a2be2;
+            animation-duration: 2.5s;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .output-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .output-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px 0;
+            flex: 0 0 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+        .output-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #8a2be2, #ff69b4);
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .output-card h3 {
+            color: #d8b4fe;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(216, 180, 254, 0.5);
+            display: flex;
+            align-items: center;
+            font-size: 1.3em;
+        }
+        .output-card h3::before {
+            content: attr(data-icon);
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .output-card p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .output-card ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+        .output-card li {
+            position: relative;
+            margin: 10px 0;
+            padding-left: 25px;
+            line-height: 1.5;
+        }
+        .output-card li:before {
             content: "✨";
             position: absolute;
-            left: -20px;
+            left: 0;
             color: #ff69b4;
+        }
+        .symbol-item {
+            position: relative;
+            padding: 8px 12px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .symbol-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        .emotion-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            margin-right: 8px;
+            margin-bottom: 5px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            background: linear-gradient(45deg, var(--start-color), var(--end-color));
+        }
+        .dream-theme-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .save-dream {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .save-dream:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .save-dream i {
+            margin-right: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .output-card {
+                flex: 0 0 calc(50% - 10px);
+            }
+            .output-card.full-width {
+                flex: 0 0 100%;
+            }
+        }
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+        }
+        .tooltip .tooltip-content {
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 11, 46, 0.95);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            pointer-events: none;
+        }
+        .tooltip:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+            bottom: 135%;
+        }
+        .tooltip .tooltip-content:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: rgba(26, 11, 46, 0.95) transparent transparent transparent;
+        }
+        .toggle-section {
+            font-size: 0.8em;
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        .section-content {
+            max-height: 1000px;
+            transition: max-height 0.5s ease;
+            overflow: hidden;
+        }
+        .section-content.collapsed {
+            max-height: 0;
         }
     </style>
 </head>
 <body>
+    <!-- Enhanced background elements -->
+    <div class="nebula"></div>
     <div class="stars" id="stars"></div>
+    <div id="shooting-stars"></div>
+
     <div class="container">
         <h1>AI Dream Decoder</h1>
-        <form method="post">
-            <textarea class="input-box" rows="4" name="dream" placeholder="Describe your dream here..."></textarea>
-            <button type="submit" class="decode-btn">Decode My Dream</button>
-        </form>
+        
+        <div class="dream-cloud">
+            <div class="cloud-icon">💭</div>
+            <form method="post" id="dreamForm">
+                <textarea class="input-box" rows="4" name="dream" id="dreamInput" placeholder="Describe your dream here... The more details you provide, the better the interpretation"></textarea>
+                <div class="decode-btn-wrapper">
+                    <button type="submit" class="decode-btn" id="decodeBtn">
+                        <span>Decode My Dream</span>
+                    </button>
+                    <div class="btn-particles" id="btnParticles"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="loader" id="dreamLoader">
+            <div class="loader-inner"></div>
+            <div class="loader-inner"></div>
+            <div class="loader-inner"></div>
+        </div>
 
         {% if meaning %}
-            <div class="output">
+            <div class="output-container" id="outputContainer">
                 {% set sections = meaning.split('\n\n') %}
+                
+                <!-- Introduction card -->
+                {% set intro = sections[0] if sections|length > 0 else '' %}
+                {% if intro and not intro.startswith('Symbols') and not intro.startswith('Emotions') and not intro.startswith('Conclusion') %}
+                    <div class="output-card full-width" style="animation-delay: 0.1s">
+                        <div class="dream-theme-badge" id="dreamThemeBadge">
+                            <span id="dreamThemeText">✧ Subconscious Exploration</span>
+                        </div>
+                        <p>{{ intro }}</p>
+                    </div>
+                {% endif %}
+                
+                <!-- Symbols card -->
                 {% for section in sections %}
                     {% if section.startswith('Symbols') %}
-                        <h3>Symbols</h3>
-                        <ul>
-                            {% for line in section.split('\n')[1:] %}
-                                {% if line.strip() %}<li>{{ line.strip() }}</li>{% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% elif section.startswith('Emotions') %}
-                        <h3>Emotions</h3>
-                        <ul>
-                            {% for line in section.split('\n')[1:] %}
-                                {% if line.strip() %}<li>{{ line.strip() }}</li>{% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% elif section.startswith('Conclusion') %}
-                        <h3>Conclusion</h3>
-                        <p>{{ section.split('\n', 1)[1]|trim }}</p>
-                    {% else %}
-                        <p>{{ section }}</p>
+                        <div class="output-card" style="animation-delay: 0.3s">
+                            <h3 data-icon="🔮">Symbols</h3>
+                            <span class="toggle-section" onclick="toggleSection(this)">−</span>
+                            <div class="section-content">
+                                <ul class="symbols-list">
+                                    {% for line in section.split('\n')[1:] %}
+                                        {% if line.strip() %}
+                                            <li class="symbol-item tooltip">
+                                                {{ line.strip() }}
+                                                <div class="tooltip-content">Tap to explore more about this symbol</div>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+                <!-- Emotions card -->
+                {% for section in sections %}
+                    {% if section.startswith('Emotions') %}
+                        <div class="output-card" style="animation-delay: 0.5s">
+                            <h3 data-icon="💫">Emotions</h3>
+                            <span class="toggle-section" onclick="toggleSection(this)">−</span>
+                            <div class="section-content">
+                                <div class="emotions-container">
+                                    {% for line in section.split('\n')[1:] %}
+                                        {% if line.strip() %}
+                                            <span class="emotion-tag" style="--start-color: #8a2be2; --end-color: #ff69b4">
+                                                {{ line.strip() }}
+                                            </span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                
+                <!-- Conclusion card -->
+                {% for section in sections %}
+                    {% if section.startswith('Conclusion') %}
+                        <div class="output-card full-width" style="animation-delay: 0.7s">
+                            <h3 data-icon="✨">Conclusion</h3>
+                            <span class="toggle-section" onclick="toggleSection(this)">−</span>
+                            <div class="section-content">
+                                <p>{{ section.split('\n', 1)[1]|trim }}</p>
+                                <div class="save-dream" onclick="saveDream()">
+                                    <i>📝</i> Save to Dream Journal
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -158,16 +527,189 @@
     </div>
 
     <script>
+        // Create stars
         const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
             star.classList.add('star');
-            star.style.width = `${Math.random() * 3}px`;
+            star.style.width = `${Math.random() * 3 + 1}px`;
             star.style.height = star.style.width;
             star.style.left = `${Math.random() * 100}%`;
             star.style.top = `${Math.random() * 100}%`;
-            star.style.animationDelay = `${Math.random() * 3}s`;
+            star.style.animationDelay = `${Math.random() * 5}s`;
             starsContainer.appendChild(star);
+        }
+
+        // Create shooting stars
+        const shootingStarsContainer = document.getElementById('shooting-stars');
+        for (let i = 0; i < 5; i++) {
+            const shootingStar = document.createElement('div');
+            shootingStar.classList.add('shooting-star');
+            shootingStar.style.left = `${Math.random() * 100}%`;
+            shootingStar.style.top = `${Math.random() * 100}%`;
+            shootingStar.style.animationDelay = `${Math.random() * 15 + 5}s`;
+            shootingStarsContainer.appendChild(shootingStar);
+        }
+
+        // Button particles effect
+        const btnParticles = document.getElementById('btnParticles');
+        const decodeBtn = document.getElementById('decodeBtn');
+        
+        if (decodeBtn) {
+            decodeBtn.addEventListener('mouseenter', createParticles);
+            decodeBtn.addEventListener('click', function(e) {
+                const form = document.getElementById('dreamForm');
+                if (form.checkValidity()) {
+                    showLoader();
+                    // Allow form submission to continue normally
+                }
+            });
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.classList.add('btn-particle');
+                    
+                    const size = Math.random() * 6 + 2;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // Random position around button
+                    const posX = (Math.random() - 0.5) * 100;
+                    const posY = (Math.random() - 0.5) * 100;
+                    particle.style.left = `calc(50% + ${posX}px)`;
+                    particle.style.top = `calc(50% + ${posY}px)`;
+                    
+                    btnParticles.appendChild(particle);
+                    
+                    // Animate particle
+                    setTimeout(() => {
+                        // Set initial opacity
+                        particle.style.opacity = '0.8';
+                        
+                        // Apply transition
+                        particle.style.transition = 'all 1s ease-out';
+                        
+                        // Move in random direction
+                        const moveX = posX * 2;
+                        const moveY = posY * 2;
+                        particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                        particle.style.opacity = '0';
+                        
+                        // Remove after animation
+                        setTimeout(() => {
+                            particle.remove();
+                        }, 1000);
+                    }, 10);
+                }, i * 50);
+            }
+        }
+
+        function showLoader() {
+            const loader = document.getElementById('dreamLoader');
+            if (loader) loader.style.display = 'block';
+        }
+
+        // Toggle sections
+        function toggleSection(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('collapsed');
+            element.textContent = content.classList.contains('collapsed') ? '+' : '−';
+        }
+
+        // Function to save dream (simulation)
+        function saveDream() {
+            // Create save notification
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.background = 'rgba(138, 43, 226, 0.9)';
+            notification.style.color = 'white';
+            notification.style.padding = '10px 20px';
+            notification.style.borderRadius = '20px';
+            notification.style.zIndex = '1000';
+            notification.textContent = 'Dream saved to journal!';
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+
+        // Apply random colors to emotion tags
+        document.addEventListener('DOMContentLoaded', function() {
+            const emotionColors = [
+                {start: '#8a2be2', end: '#ff69b4'}, // Purple to Pink
+                {start: '#ff6b6b', end: '#ffa502'}, // Red to Orange
+                {start: '#2ed573', end: '#1e90ff'}, // Green to Blue
+                {start: '#5352ed', end: '#7bed9f'}, // Blue to Green
+                {start: '#ff6348', end: '#ffb8b8'}, // Red to Light Pink
+                {start: '#70a1ff', end: '#1e90ff'}, // Light Blue to Blue
+                {start: '#ff9ff3', end: '#feca57'}  // Pink to Yellow
+            ];
+            
+            const emotionTags = document.querySelectorAll('.emotion-tag');
+            emotionTags.forEach(tag => {
+                const color = emotionColors[Math.floor(Math.random() * emotionColors.length)];
+                tag.style.setProperty('--start-color', color.start);
+                tag.style.setProperty('--end-color', color.end);
+            });
+
+            // Set random theme badge
+            setRandomTheme();
+
+            // Distribute animations to output cards
+            const outputCards = document.querySelectorAll('.output-card');
+            outputCards.forEach((card, index) => {
+                card.style.animationDelay = `${0.2 * index}s`;
+            });
+        });
+
+        // Set random dream theme
+        function setRandomTheme() {
+            const dreamThemes = [
+                {text: "✧ Subconscious Exploration", color: "#8a2be2"},
+                {text: "✧ Emotional Journey", color: "#ff69b4"},
+                {text: "✧ Transformation", color: "#1e90ff"},
+                {text: "✧ Personal Growth", color: "#2ed573"},
+                {text: "✧ Inner Conflict", color: "#ffa502"},
+                {text: "✧ Spiritual Message", color: "#70a1ff"}
+            ];
+            
+            const themeBadge = document.getElementById('dreamThemeBadge');
+            const themeText = document.getElementById('dreamThemeText');
+            
+            if (themeBadge && themeText) {
+                const theme = dreamThemes[Math.floor(Math.random() * dreamThemes.length)];
+                themeText.textContent = theme.text;
+                themeBadge.style.borderColor = theme.color;
+            }
+        }
+
+        // Animate input field with particles when focused
+        const dreamInput = document.getElementById('dreamInput');
+        if (dreamInput) {
+            dreamInput.addEventListener('focus', function() {
+                const dreamCloud = document.querySelector('.dream-cloud');
+                if (dreamCloud) {
+                    dreamCloud.style.animation = "pulsate 2s infinite alternate";
+                }
+            });
+            
+            dreamInput.addEventListener('blur', function() {
+                const dreamCloud = document.querySelector('.dream-cloud');
+                if (dreamCloud) {
+                    dreamCloud.style.animation = "pulsate 5s infinite alternate";
+                }
+            });
         }
     </script>
 </body>
